@@ -1,13 +1,14 @@
-import { ADD_INGS, REMOVE_INGS } from "./actions";
+import {
+  ADD_INGS,
+  REMOVE_INGS,
+  SET_INGS,
+  INGS_ERROR,
+} from "../actions/actionTypes";
 
 const initialStore = {
-  ingridients: {
-    bacon: 0,
-    cheese: 0,
-    meat: 0,
-    salad: 0,
-  },
+  ingridients: null,
   totalPrice: 4,
+  error: false,
 };
 
 const INGRIDIENT_PRICES = {
@@ -17,7 +18,7 @@ const INGRIDIENT_PRICES = {
   bacon: 0.7,
 };
 
-const reducer = (state = initialStore, action) => {
+const burgerBuilderReducer = (state = initialStore, action) => {
   switch (action.type) {
     case ADD_INGS:
       return {
@@ -37,9 +38,25 @@ const reducer = (state = initialStore, action) => {
         },
         totalPrice: state.totalPrice - INGRIDIENT_PRICES[action.ingridientName],
       };
+    case SET_INGS:
+      return {
+        ...state,
+        ingridients: {
+          bacon: action.ingridients.bacon,
+          cheese: action.ingridients.cheese,
+          meat: action.ingridients.meat,
+          salad: action.ingridients.salad,
+        },
+        error: false,
+      };
+    case INGS_ERROR:
+      return {
+        ...state,
+        error: true,
+      };
     default:
       return state;
   }
 };
 
-export default reducer;
+export default burgerBuilderReducer;

@@ -23,7 +23,6 @@ class Checkout extends Component {
           path={this.props.match.url + "/contact-data"}
           component={ContactData}
         />
-        )} />
       </div>
     );
   }

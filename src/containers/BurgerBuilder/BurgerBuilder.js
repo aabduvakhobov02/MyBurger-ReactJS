@@ -8,25 +8,18 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
-import { ADD_INGS, REMOVE_INGS } from "../../store/actions";
+import {
+  addIngridients,
+  removeIngridients,
+  fetchIngridients,
+} from "../../store/actions";
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   };
 
   componentDidMount() {
-    axios
-      .get(
-        "https://gurman-myburger-default-rtdb.asia-southeast1.firebasedatabase.app/ingridients.json"
-      )
-      .then((response) => {
-        this.setState({ ingridients: response.data });
-      })
-      .catch((error) => {
-        this.setState({ error: true });
-      });
+    this.props.onIngridientFetchHandler();
   }
 
   updatePurchasable(ingridients) {
@@ -58,7 +51,7 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
     let orderSummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p style={{ textAlign: "center", fontWeight: "bold" }}>
         Sorry, Ingridients can't be loaded
       </p>
@@ -89,10 +82,6 @@ class BurgerBuilder extends Component {
         />
       );
     }
-
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
     return (
       <Aux>
         <Modal
@@ -107,18 +96,19 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = ({ ingridients, totalPrice }) => {
+const mapStateToProps = ({ ingridients, totalPrice, error }) => {
   return {
     ingridients,
     totalPrice,
+    error,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngridientAddHandler: (ingName) =>
-      dispatch({ type: ADD_INGS, ingridientName: ingName }),
+    onIngridientAddHandler: (ingName) => dispatch(addIngridients(ingName)),
     onIngridientRemoveHandler: (ingName) =>
-      dispatch({ type: REMOVE_INGS, ingridientName: ingName }),
+      dispatch(removeIngridients(ingName)),
+    onIngridientFetchHandler: () => dispatch(fetchIngridients()),
   };
 };
 
