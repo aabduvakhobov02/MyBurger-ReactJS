@@ -12,6 +12,7 @@ import {
   addIngridients,
   removeIngridients,
   fetchIngridients,
+  purchaseInit,
 } from "../../store/actions";
 class BurgerBuilder extends Component {
   state = {
@@ -40,6 +41,7 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -96,11 +98,11 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = ({ ingridients, totalPrice, error }) => {
+const mapStateToProps = (state) => {
   return {
-    ingridients,
-    totalPrice,
-    error,
+    ingridients: state.burgerBuilder.ingridients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -109,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
     onIngridientRemoveHandler: (ingName) =>
       dispatch(removeIngridients(ingName)),
     onIngridientFetchHandler: () => dispatch(fetchIngridients()),
+    onInitPurchase: () => dispatch(purchaseInit()),
   };
 };
 

@@ -11,9 +11,13 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const rootReducer = combineReducers({
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer,
+});
 
 const store = createStore(
-  burgerBuilderReducer,
+  rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
 ReactDOM.render(

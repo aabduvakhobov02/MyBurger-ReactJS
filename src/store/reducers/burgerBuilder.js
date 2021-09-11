@@ -18,7 +18,7 @@ const INGRIDIENT_PRICES = {
   bacon: 0.7,
 };
 
-const burgerBuilderReducer = (state = initialStore, action) => {
+const reducer = (state = initialStore, action) => {
   switch (action.type) {
     case ADD_INGS:
       return {
@@ -47,6 +47,7 @@ const burgerBuilderReducer = (state = initialStore, action) => {
           meat: action.ingridients.meat,
           salad: action.ingridients.salad,
         },
+        totalPrice: 4,
         error: false,
       };
     case INGS_ERROR:
@@ -59,4 +60,4 @@ const burgerBuilderReducer = (state = initialStore, action) => {
   }
 };
 
-export default burgerBuilderReducer;
+export default reducer;

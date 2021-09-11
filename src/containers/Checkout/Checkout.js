@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
 import { connect } from "react-redux";
+import { purchaseInit } from "../../store/actions";
 
 class Checkout extends Component {
   onCheckoutCancelled = () => {
@@ -12,25 +13,34 @@ class Checkout extends Component {
     this.props.history.replace("/checkout/contact-data");
   };
   render() {
-    return (
-      <div>
-        <CheckoutSummary
-          ingridients={this.props.ingridients}
-          checkoutCancelled={this.onCheckoutCancelled}
-          checkoutContinued={this.onCheckoutContinued}
-        />
-        <Route
-          path={this.props.match.url + "/contact-data"}
-          component={ContactData}
-        />
-      </div>
-    );
+    let summary = <Redirect to="/" />;
+    if (this.props.ingridients) {
+      const purchaseRedirect = this.props.purchased ? (
+        <Redirect to="/" />
+      ) : null;
+      summary = (
+        <div>
+          {purchaseRedirect}
+          <CheckoutSummary
+            ingridients={this.props.ingridients}
+            checkoutCancelled={this.onCheckoutCancelled}
+            checkoutContinued={this.onCheckoutContinued}
+          />
+          <Route
+            path={this.props.match.url + "/contact-data"}
+            component={ContactData}
+          />
+        </div>
+      );
+    }
+    return summary;
   }
 }
 
-const mapStateToProps = ({ ingridients }) => {
+const mapStateToProps = (state) => {
   return {
-    ingridients,
+    ingridients: state.burgerBuilder.ingridients,
+    purchased: state.order.purchased,
   };
 };
 

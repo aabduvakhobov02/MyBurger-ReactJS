@@ -1,30 +1,48 @@
-import { PURCHASE_BURGER_SUCCESS, PURCHASE_BURGER_FAIL } from "./actionTypes";
+import {
+  PURCHASE_SUCCEEDED,
+  PURCHASE_FAILED,
+  PURCHASE_STARTED,
+  PURCHASE_INIT,
+} from "./actionTypes";
 import axios from "../../axios-orders";
 
-export const purchaseBurgerSuccess = (id, orderData) => {
+export const purchaseSucceeded = (id, orderData) => {
   return {
-    type: PURCHASE_BURGER_SUCCESS,
+    type: PURCHASE_SUCCEEDED,
     orderId: id,
     orderData: orderData,
   };
 };
 
-export const purchaseBurgerFail = (error) => {
+export const purchaseFailed = (error) => {
   return {
-    type: PURCHASE_BURGER_FAIL,
+    type: PURCHASE_FAILED,
     error: error,
   };
 };
 
-export const purchaseBurgerStarted = (orderData) => {
+export const purchaseStarted = () => {
+  return {
+    type: PURCHASE_STARTED,
+  };
+};
+
+export const purchaseInit = () => {
+  return {
+    type: PURCHASE_INIT,
+  };
+};
+
+export const purchaseBurger = (orderData) => {
   return (dispatch) => {
+    dispatch(purchaseStarted());
     axios
-      .post("/orders.json", order)
+      .post("/orders.json", orderData)
       .then((response) => {
-        dispatch(purchaseBurgerSuccess(response.data, orderData));
+        dispatch(purchaseSucceeded(response.data, orderData));
       })
       .catch((error) => {
-        dispatch(purchaseBurgerFail(error));
+        dispatch(purchaseFailed(error));
       });
   };
 };
