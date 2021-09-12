@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./Order.module.css";
+import Button from "../UI/Button/Button";
 
 const order = (props) => {
   const ingridients = [];
@@ -32,6 +33,9 @@ const order = (props) => {
       <p>
         Price: <strong>USD {props.price}</strong>
       </p>
+      <Button btnType="Danger" clicked={props.clicked}>
+        Delete
+      </Button>
     </div>
   );
 };

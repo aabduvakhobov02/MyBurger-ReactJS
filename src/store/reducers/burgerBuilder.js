@@ -18,43 +18,59 @@ const INGRIDIENT_PRICES = {
   bacon: 0.7,
 };
 
+const addIngridients = (state, action) => {
+  return {
+    ...state,
+    ingridients: {
+      ...state.ingridients,
+      [action.ingridientName]: state.ingridients[action.ingridientName] + 1,
+    },
+    totalPrice: state.totalPrice + INGRIDIENT_PRICES[action.ingridientName],
+  };
+};
+
+const removeIngridients = (state, action) => {
+  return {
+    ...state,
+    ingridients: {
+      ...state.ingridients,
+      [action.ingridientName]: state.ingridients[action.ingridientName] - 1,
+    },
+    totalPrice: state.totalPrice - INGRIDIENT_PRICES[action.ingridientName],
+  };
+};
+
+const setIngridients = (state, action) => {
+  return {
+    ...state,
+    ingridients: {
+      bacon: action.ingridients.bacon,
+      cheese: action.ingridients.cheese,
+      meat: action.ingridients.meat,
+      salad: action.ingridients.salad,
+    },
+    totalPrice: 4,
+    error: false,
+  };
+};
+
+const ingridientsError = (state, action) => {
+  return {
+    ...state,
+    error: true,
+  };
+};
+
 const reducer = (state = initialStore, action) => {
   switch (action.type) {
     case ADD_INGS:
-      return {
-        ...state,
-        ingridients: {
-          ...state.ingridients,
-          [action.ingridientName]: state.ingridients[action.ingridientName] + 1,
-        },
-        totalPrice: state.totalPrice + INGRIDIENT_PRICES[action.ingridientName],
-      };
+      return addIngridients(state, action);
     case REMOVE_INGS:
-      return {
-        ...state,
-        ingridients: {
-          ...state.ingridients,
-          [action.ingridientName]: state.ingridients[action.ingridientName] - 1,
-        },
-        totalPrice: state.totalPrice - INGRIDIENT_PRICES[action.ingridientName],
-      };
+      return removeIngridients(state, action);
     case SET_INGS:
-      return {
-        ...state,
-        ingridients: {
-          bacon: action.ingridients.bacon,
-          cheese: action.ingridients.cheese,
-          meat: action.ingridients.meat,
-          salad: action.ingridients.salad,
-        },
-        totalPrice: 4,
-        error: false,
-      };
+      return setIngridients(state, action);
     case INGS_ERROR:
-      return {
-        ...state,
-        error: true,
-      };
+      return ingridientsError(state, action);
     default:
       return state;
   }

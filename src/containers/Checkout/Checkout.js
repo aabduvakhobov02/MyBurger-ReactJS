@@ -3,7 +3,6 @@ import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSumm
 import { Route, Redirect } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
 import { connect } from "react-redux";
-import { purchaseInit } from "../../store/actions";
 
 class Checkout extends Component {
   onCheckoutCancelled = () => {
@@ -16,7 +15,7 @@ class Checkout extends Component {
     let summary = <Redirect to="/" />;
     if (this.props.ingridients) {
       const purchaseRedirect = this.props.purchased ? (
-        <Redirect to="/" />
+        <Redirect to="/orders" />
       ) : null;
       summary = (
         <div>
