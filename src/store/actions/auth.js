@@ -1,4 +1,9 @@
-import { AUTH_STARTED, AUTH_SUCCEEDED, AUTH_FAILED } from "./actionTypes";
+import {
+  AUTH_STARTED,
+  AUTH_SUCCEEDED,
+  AUTH_FAILED,
+  AUTH_LOGOUT,
+} from "./actionTypes";
 import axios from "axios";
 
 export const authStarted = () => {
@@ -21,6 +26,20 @@ export const authFailed = (error) => {
   };
 };
 
+export const checkAuthLogout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
+  };
+};
+
+export const logout = () => {
+  return {
+    type: AUTH_LOGOUT,
+  };
+};
+
 export const auth = (email, password, isSignUp) => {
   return (dispatch) => {
     dispatch(authStarted());
@@ -40,6 +59,7 @@ export const auth = (email, password, isSignUp) => {
       .then((response) => {
         console.log(response);
         dispatch(authSucceeded(response.data.idToken, response.data.localId));
+        dispatch(checkAuthLogout(response.data.expiresIn));
       })
       .catch((error) => {
         console.log(error);
