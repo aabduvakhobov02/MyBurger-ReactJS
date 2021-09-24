@@ -71,11 +71,13 @@ export const fetchOrdersFailed = (error) => {
   };
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
   return (dispatch) => {
     dispatch(fetchOrdersStarted());
+    const queryParams =
+      "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
     axios
-      .get("/orders.json?auth=" + token)
+      .get("/orders.json" + queryParams)
       .then((res) => {
         const fetchedOrders = [];
         for (let key in res.data) {
@@ -99,9 +101,11 @@ export const removeOrder = (id) => {
   };
 };
 
-export const deleteOrder = (id) => {
+export const deleteOrder = (id, token) => {
   return (dispatch) => {
-    axios.delete(`/orders/${id}.json`);
+    const queryParams =
+      "?auth=" + token;
+    axios.delete(`/orders/${id}.json` + queryParams);
     dispatch(removeOrder(id));
   };
 };
