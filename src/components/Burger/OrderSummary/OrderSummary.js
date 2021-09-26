@@ -4,10 +4,6 @@ import Button from '../../UI/Button/Button';
 
 
 class OrderSummary extends Component{
-    // componentDidUpdate(){
-    //     console.log('[OrderSummary] DidUpdate');
-    // }
-    
     render(){
         const ingridientSummary = Object.keys(this.props.ingridients)
         .map( igKey => {

@@ -7,6 +7,7 @@ import Input from "../../../components/UI/Input/Input";
 import { connect } from "react-redux";
 import { purchaseBurger } from "../../../store/actions";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import { checkValidity } from "../../../shared/validation";
 
 class ContactData extends Component {
   state = {
@@ -118,26 +119,13 @@ class ContactData extends Component {
     this.props.onBurgerOrdered(order, this.props.token);
   };
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    return isValid;
-  }
   onInputChangedHandler = (event, inputIndentifier) => {
     const newOrderForm = { ...this.state.orderForm };
     const newFormElement = { ...newOrderForm[inputIndentifier] };
 
     newFormElement.value = event.target.value;
     newFormElement.touched = true;
-    newFormElement.valid = this.checkValidity(
+    newFormElement.valid = checkValidity(
       newFormElement.value,
       newFormElement.validation
     );
@@ -147,7 +135,6 @@ class ContactData extends Component {
     for (let inputIndentifier in newOrderForm) {
       formIsValid = newOrderForm[inputIndentifier].valid && formIsValid;
     }
-    console.log(formIsValid);
     this.setState({ orderForm: newOrderForm, formIsValid: formIsValid });
   };
   render() {

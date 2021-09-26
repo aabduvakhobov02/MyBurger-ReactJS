@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 class Logout extends Component {
   componentDidMount() {
     this.props.onLogout();
-    console.log(this.props.history);
   }
   render() {
     return <Redirect to="/" />;
