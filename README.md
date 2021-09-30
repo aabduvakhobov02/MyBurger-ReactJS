@@ -1,6 +1,6 @@
 ## The Link of the Project:
 
-`https://gurman-myburger.web.app/`
+https://gurman-myburger.web.app/
 
 ## Available Scripts
 
